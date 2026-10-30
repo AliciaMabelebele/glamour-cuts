@@ -390,6 +390,63 @@ function showMsg(text, success) {
   .whatsapp-float{position:fixed;bottom:1.8rem;right:1.8rem;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.25);z-index:200;transition:transform 0.2s ease;}
   .whatsapp-float:hover{transform:scale(1.08);}
   @media(max-width:768px){.whatsapp-float{width:52px;height:52px;bottom:1.2rem;right:1.2rem;}}
+  <!-- Cookie icon + consent banner -->
+<button class="cookie-float" id="cookieIcon" aria-label="Cookie settings" type="button">
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#FAF7F2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-4-4 1 1 0 0 0-1-1z"/>
+    <circle cx="8.5" cy="11" r="1" fill="#FAF7F2"/>
+    <circle cx="12" cy="15.5" r="1" fill="#FAF7F2"/>
+    <circle cx="15.5" cy="12.5" r="1" fill="#FAF7F2"/>
+  </svg>
+</button>
+
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie notice">
+  <p class="cookie-text">We use cookies to keep the site working and to improve your experience. By accepting, you agree to our use of cookies.</p>
+  <div class="cookie-actions">
+    <button type="button" class="cookie-btn cookie-accept" id="cookieAccept">Accept</button>
+    <button type="button" class="cookie-btn cookie-decline" id="cookieDecline">Decline</button>
+  </div>
+</div>
+
+<style>
+  .cookie-float{position:fixed;bottom:1.8rem;left:1.8rem;width:54px;height:54px;background:#3D2B1F;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.25);z-index:200;cursor:pointer;transition:transform 0.2s ease,background 0.2s ease;}
+  .cookie-float:hover{transform:scale(1.08);background:#C4957A;}
+  .cookie-banner{position:fixed;left:1.8rem;bottom:6rem;max-width:340px;background:#FAF7F2;color:#3D2B1F;border:1px solid #E8D5C4;border-left:3px solid #C4957A;padding:1.2rem 1.3rem;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:201;font-family:'DM Sans',system-ui,sans-serif;display:none;}
+  .cookie-banner.show{display:block;}
+  .cookie-text{font-size:0.85rem;line-height:1.55;margin-bottom:1rem;}
+  .cookie-actions{display:flex;gap:0.6rem;}
+  .cookie-btn{padding:0.55rem 1.1rem;font-family:inherit;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:1px solid #3D2B1F;}
+  .cookie-accept{background:#3D2B1F;color:#FAF7F2;}
+  .cookie-accept:hover{background:#C4957A;border-color:#C4957A;}
+  .cookie-decline{background:transparent;color:#3D2B1F;}
+  .cookie-decline:hover{background:#E8D5C4;}
+  @media(max-width:768px){
+    .cookie-float{width:48px;height:48px;bottom:1.2rem;left:1.2rem;}
+    .cookie-banner{left:1.2rem;right:1.2rem;max-width:none;bottom:5rem;}
+  }
+</style>
+
+<script>
+(function () {
+  var banner = document.getElementById('cookieBanner');
+  var icon = document.getElementById('cookieIcon');
+  var KEY = 'glamourCutsCookieConsent';
+
+  function getChoice() {
+    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+  }
+  function setChoice(value) {
+    try { localStorage.setItem(KEY, value); } catch (e) {}
+    banner.classList.remove('show');
+  }
+
+  if (!getChoice()) { banner.classList.add('show'); }
+
+  icon.addEventListener('click', function () { banner.classList.toggle('show'); });
+  document.getElementById('cookieAccept').addEventListener('click', function () { setChoice('accepted'); });
+  document.getElementById('cookieDecline').addEventListener('click', function () { setChoice('declined'); });
+})();
+</script>
 </style>
 </body>
 </html>
